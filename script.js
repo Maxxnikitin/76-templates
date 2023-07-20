@@ -10,6 +10,8 @@ const template = document.querySelector(".todo-template");
 const input = document.querySelector(".form__input");
 const submitBtn = document.querySelector(".form__submit");
 
+let editableEl = null;
+
 const render = () => {
   items.forEach((item) => {
     // container.innerHTML += createElByInner(item);
@@ -21,6 +23,14 @@ const render = () => {
 };
 
 const createEl = () => {
+  if (editableEl) {
+    const span = editableEl.querySelector(".item__text");
+    span.textContent = input.value;
+    input.value = "";
+    submitBtn.textContent = "Добавить";
+    editableEl = null;
+    return;
+  }
   const newEl = createElByTemplate({ text: input.value });
   input.value = "";
 
@@ -38,7 +48,18 @@ const createElByTemplate = (data) => {
   const duplicateBtn = el.querySelector(".duplicate");
   duplicateBtn.addEventListener("click", duplicateEl);
 
+  const editBtn = el.querySelector(".edit");
+  editBtn.addEventListener("click", editEl);
+
   return el;
+};
+
+const editEl = (e) => {
+  const el = e.target.closest(".list__item");
+  const text = el.querySelector(".item__text").textContent;
+  input.value = text;
+  submitBtn.textContent = "Обновить";
+  editableEl = el;
 };
 
 const duplicateEl = (e) => {
