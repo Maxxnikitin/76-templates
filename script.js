@@ -7,6 +7,8 @@ const items = [
 
 const container = document.querySelector(".list");
 const template = document.querySelector(".todo-template");
+const input = document.querySelector(".form__input");
+const submitBtn = document.querySelector(".form__submit");
 
 const render = () => {
   items.forEach((item) => {
@@ -14,6 +16,15 @@ const render = () => {
     // container.insertAdjacentHTML("beforeend", createElByInner(item));
     container.append(createElByTemplate(item));
   });
+
+  submitBtn.addEventListener("click", createEl);
+};
+
+const createEl = () => {
+  const newEl = createElByTemplate({ text: input.value });
+  input.value = "";
+
+  container.append(newEl);
 };
 
 const createElByTemplate = (data) => {
@@ -21,7 +32,26 @@ const createElByTemplate = (data) => {
   const span = el.querySelector(".item__text");
   span.textContent = data.text;
 
+  const deleteBtn = el.querySelector(".delete");
+  deleteBtn.addEventListener("click", deleteEl);
+
+  const duplicateBtn = el.querySelector(".duplicate");
+  duplicateBtn.addEventListener("click", duplicateEl);
+
   return el;
+};
+
+const duplicateEl = (e) => {
+  const currEl = e.target.closest(".list__item");
+  const text = currEl.querySelector(".item__text").textContent;
+
+  const newEl = createElByTemplate({ text });
+  currEl.after(newEl);
+};
+
+const deleteEl = (e) => {
+  const el = e.target.closest(".list__item");
+  el.remove();
 };
 
 const createElByCreateEl = (data) => {
