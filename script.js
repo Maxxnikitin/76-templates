@@ -3,17 +3,25 @@ const items = [
   { text: "Полить цветы" },
   { text: "Пройти туториал по Реакту" },
   { text: "Сделать фронтенд для своего проекта" },
-  { text: `<img src='e' onerror='alert("Ваш сайт взломан!")'` },
 ];
 
 const container = document.querySelector(".list");
+const template = document.querySelector(".todo-template");
 
 const render = () => {
   items.forEach((item) => {
     // container.innerHTML += createElByInner(item);
     // container.insertAdjacentHTML("beforeend", createElByInner(item));
-    container.append(createElByCreateEl(item));
+    container.append(createElByTemplate(item));
   });
+};
+
+const createElByTemplate = (data) => {
+  const el = template.content.cloneNode(true);
+  const span = el.querySelector(".item__text");
+  span.textContent = data.text;
+
+  return el;
 };
 
 const createElByCreateEl = (data) => {
